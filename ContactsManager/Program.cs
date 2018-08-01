@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContactsManager
 {
     class Program
     {
-        List<string> contacts = new List<string>();
+        static List<string> contacts = new List<string>();
 
         static void Main(string[] args)
         {
             AfficherMenu();
-
         }
 
         static void AfficherMenu()
@@ -54,7 +50,10 @@ namespace ContactsManager
             Console.Clear();
             Console.WriteLine("LISTE DES CONTACTS\n");
 
-            Console.WriteLine("TODO...");
+            foreach(var contact in contacts)
+            {
+                Console.WriteLine($"- {contact}");
+            }
 
             Console.WriteLine("\nAppuyez sur une touche pour revenir au menu...");
             Console.ReadKey();
@@ -66,7 +65,11 @@ namespace ContactsManager
             Console.Clear();
             Console.WriteLine("AJOUT D'UN CONTACT\n");
 
-            Console.WriteLine("TODO...");
+            Console.WriteLine("Entre le nom:");
+            var contact = Console.ReadLine();
+            contacts.Add(contact);
+
+            Console.WriteLine("Contact ajouté !");
 
             Console.WriteLine("\nAppuyez sur une touche pour revenir au menu...");
             Console.ReadKey();
@@ -78,7 +81,23 @@ namespace ContactsManager
             Console.Clear();
             Console.WriteLine("SUPPRESSION D'UN CONTACT\n");
 
-            Console.WriteLine("TODO...");
+            for (var i = 0; i < contacts.Count; i++)
+            {
+                Console.WriteLine($"- ({i}) {contacts[i]}");
+            }
+
+            Console.Write("Entre le numéro du contact à supprimer: ");
+            var index = int.Parse(Console.ReadLine());
+
+            if (index < contacts.Count)
+            {
+                contacts.RemoveAt(index);
+                Console.WriteLine("Contact supprimé !");
+            }
+            else
+            {
+                Console.WriteLine("Impossible de supprimer le contact: index inconnu !");
+            }
 
             Console.WriteLine("\nAppuyez sur une touche pour revenir au menu...");
             Console.ReadKey();
