@@ -9,11 +9,35 @@ namespace ContactsManager
 
         static void Main(string[] args)
         {
-            AfficherMenu();
+            bool continuer = true;
+            while (continuer)
+            {
+                var choix = AfficherMenu();
+                switch (choix)
+                {
+                    case "1":
+                        ListerContacts();
+                        break;
+                    case "2":
+                        AjouterContact();
+                        break;
+                    case "3":
+                        SupprimerContact();
+                        break;
+                    case "4":
+                        continuer = false;
+                        break;
+                    default:
+                        Console.WriteLine("Choix invalide, l'application va fermer...");
+                        continuer = false;
+                        break;
+                }
+            }
         }
 
-        static void AfficherMenu()
+        static string AfficherMenu()
         {
+            bool continuerExecution = true;
             Console.Clear();
 
             Console.WriteLine("MENU\n");
@@ -23,26 +47,7 @@ namespace ContactsManager
             Console.WriteLine("4. Quitter");
             Console.Write("\nVotre choix: ");
 
-            var choix = Console.ReadLine();
-            switch (choix)
-            {
-                case "1":
-                    ListerContacts();
-                    break;
-                case "2":
-                    AjouterContact();
-                    break;
-                case "3":
-                    SupprimerContact();
-                    break;
-                case "4":
-                    Quitter();
-                    break;
-                default:
-                    Console.WriteLine("Choix invalide, l'application va fermer...");
-                    Quitter();
-                    break;
-            }
+            return Console.ReadLine();
         }
 
         static void ListerContacts()
@@ -57,7 +62,6 @@ namespace ContactsManager
 
             Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
             Console.ReadKey();
-            AfficherMenu();
         }
 
         static void AjouterContact()
@@ -73,7 +77,6 @@ namespace ContactsManager
 
             Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
             Console.ReadKey();
-            AfficherMenu();
         }
 
         static void SupprimerContact()
@@ -101,12 +104,6 @@ namespace ContactsManager
 
             Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
             Console.ReadKey();
-            AfficherMenu();
-        }
-
-        static void Quitter()
-        {
-            Environment.Exit(0);
         }
     }
 }
