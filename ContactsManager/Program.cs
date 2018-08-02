@@ -39,7 +39,7 @@ namespace ContactsManager
                     Quitter();
                     break;
                 default:
-                    Console.WriteLine("Choix invalide, l'application va fermer");
+                    Console.WriteLine("Choix invalide, l'application va fermer...");
                     Quitter();
                     break;
             }
@@ -55,7 +55,7 @@ namespace ContactsManager
                 Console.WriteLine($"- {contact}");
             }
 
-            Console.WriteLine("\nAppuyez sur une touche pour revenir au menu...");
+            Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
             Console.ReadKey();
             AfficherMenu();
         }
@@ -71,7 +71,7 @@ namespace ContactsManager
 
             Console.WriteLine("Contact ajouté !");
 
-            Console.WriteLine("\nAppuyez sur une touche pour revenir au menu...");
+            Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
             Console.ReadKey();
             AfficherMenu();
         }
@@ -83,7 +83,7 @@ namespace ContactsManager
 
             for (var i = 0; i < contacts.Count; i++)
             {
-                Console.WriteLine($"- ({i}) {contacts[i]}");
+                Console.WriteLine($"- {contacts[i]} ({i})");
             }
 
             Console.Write("Entre le numéro du contact à supprimer: ");
@@ -96,10 +96,10 @@ namespace ContactsManager
             }
             else
             {
-                Console.WriteLine("Impossible de supprimer le contact: index inconnu !");
+                Console.WriteLine("Numéro invalide !");
             }
 
-            Console.WriteLine("\nAppuyez sur une touche pour revenir au menu...");
+            Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
             Console.ReadKey();
             AfficherMenu();
         }
