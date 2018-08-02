@@ -35,9 +35,12 @@ namespace ContactsManager
             }
         }
 
+        /// <summary>
+        /// Affiche le menu
+        /// </summary>
+        /// <returns>Retourne le choix de l'utilisateur.</returns>
         static string AfficherMenu()
         {
-            bool continuerExecution = true;
             Console.Clear();
 
             Console.WriteLine("MENU\n");
