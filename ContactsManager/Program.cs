@@ -89,20 +89,16 @@ namespace ContactsManager
             Console.WriteLine("AJOUT D'UN CONTACT\n");
 
             var contact = new Contact();
+            contact.Nom = SaisirChaineObligatoire("Nom:");
+            contact.Prenom = SaisirChaineObligatoire("Prénom:");
 
-            Console.WriteLine("Entre le nom:");
-            contact.Nom = Console.ReadLine();
-
-            Console.WriteLine("Entre le prénom:");
-            contact.Prenom = Console.ReadLine();
-
-            Console.WriteLine("Entre l'email:");
+            Console.WriteLine("Email:");
             contact.Email = Console.ReadLine();
 
-            Console.WriteLine("Entre le téléphone:");
+            Console.WriteLine("Téléphone:");
             contact.Telephone = Console.ReadLine();
 
-            Console.WriteLine("Entre la date de naissance:");
+            Console.WriteLine("Date de naissance:");
             contact.DateNaissance = DateTime.Parse(Console.ReadLine());
 
             contacts.Add(contact);
@@ -111,6 +107,21 @@ namespace ContactsManager
 
             Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
             Console.ReadKey();
+        }
+
+        static string SaisirChaineObligatoire(string message)
+        {
+            Console.WriteLine(message);
+            var saisie = Console.ReadLine();
+            while (string.IsNullOrWhiteSpace(saisie))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Champ requis. Recommence:");
+                Console.ResetColor();
+                saisie = Console.ReadLine();
+            }
+
+            return saisie;
         }
 
         static void SupprimerContact()
