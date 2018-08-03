@@ -5,7 +5,7 @@ namespace ContactsManager
 {
     class Program
     {
-        static List<string> contacts = new List<string>();
+        static List<Contact> contacts = new List<Contact>();
 
         static void Main(string[] args)
         {
@@ -58,11 +58,27 @@ namespace ContactsManager
             Console.Clear();
             Console.WriteLine("LISTE DES CONTACTS\n");
 
-            foreach(var contact in contacts)
-            {
-                Console.WriteLine($"- {contact}");
-            }
+            Console.Write("{0,-10} | ", "NOM");
+            Console.Write("{0,-10} | ", "PRENOM");
+            Console.Write("{0,-20} | ", "EMAIL");
+            Console.Write("{0,-10} | ", "TELEPHONE");
+            Console.Write("{0,-10} | ", "DATE NAIS.");
+            Console.WriteLine();
+            Console.WriteLine(new string('-', 75));
 
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            foreach (var contact in contacts)
+            {
+                Console.Write("{0,-10} | ", contact.Nom);
+                Console.Write("{0,-10} | ", contact.Prenom);
+                Console.Write("{0,-20} | ", contact.Email);
+                Console.Write("{0,-10} | ", contact.Telephone);
+                Console.Write("{0,-10} | ", contact.DateNaissance.ToShortDateString());
+                Console.WriteLine();
+            }
+            Console.ResetColor();
+
+            Console.WriteLine();
             Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
             Console.ReadKey();
         }
@@ -72,8 +88,23 @@ namespace ContactsManager
             Console.Clear();
             Console.WriteLine("AJOUT D'UN CONTACT\n");
 
+            var contact = new Contact();
+
             Console.WriteLine("Entre le nom:");
-            var contact = Console.ReadLine();
+            contact.Nom = Console.ReadLine();
+
+            Console.WriteLine("Entre le prénom:");
+            contact.Prenom = Console.ReadLine();
+
+            Console.WriteLine("Entre l'email:");
+            contact.Email = Console.ReadLine();
+
+            Console.WriteLine("Entre le téléphone:");
+            contact.Telephone = Console.ReadLine();
+
+            Console.WriteLine("Entre la date de naissance:");
+            contact.DateNaissance = DateTime.Parse(Console.ReadLine());
+
             contacts.Add(contact);
 
             Console.WriteLine("Contact ajouté !");
@@ -107,6 +138,20 @@ namespace ContactsManager
 
             Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
             Console.ReadKey();
+        }
+    }
+
+    public class Contact
+    {
+        public string Nom { get; set; }
+        public string Prenom { get; set; }
+        public string Email { get; set; }
+        public string Telephone { get; set; }
+        public DateTime DateNaissance { get; set; }
+
+        public override string ToString()
+        {
+            return Nom + " " + Prenom;
         }
     }
 }
