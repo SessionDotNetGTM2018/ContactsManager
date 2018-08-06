@@ -73,7 +73,7 @@ namespace ContactsManager
                 Console.Write("{0,-10} | ", contact.Prenom);
                 Console.Write("{0,-20} | ", contact.Email);
                 Console.Write("{0,-10} | ", contact.Telephone);
-                Console.Write("{0,-10} | ", contact.DateNaissance.ToShortDateString());
+                Console.Write("{0,-10} | ", contact.DateNaissance?.ToShortDateString());
                 Console.WriteLine();
             }
             Console.ResetColor();
@@ -89,8 +89,8 @@ namespace ContactsManager
             Console.WriteLine("AJOUT D'UN CONTACT\n");
 
             var contact = new Contact();
-            contact.Nom = SaisirChaineObligatoire("Nom:");
-            contact.Prenom = SaisirChaineObligatoire("Prénom:");
+            contact.Nom = OutilsConsole.SaisirChaineObligatoire("Nom:");
+            contact.Prenom = OutilsConsole.SaisirChaineObligatoire("Prénom:");
 
             Console.WriteLine("Email:");
             contact.Email = Console.ReadLine();
@@ -98,8 +98,7 @@ namespace ContactsManager
             Console.WriteLine("Téléphone:");
             contact.Telephone = Console.ReadLine();
 
-            Console.WriteLine("Date de naissance:");
-            contact.DateNaissance = DateTime.Parse(Console.ReadLine());
+            contact.DateNaissance = OutilsConsole.SaisirDate("Date de naissance:");
 
             contacts.Add(contact);
 
@@ -109,30 +108,28 @@ namespace ContactsManager
             Console.ReadKey();
         }
 
-        static string SaisirChaineObligatoire(string message)
-        {
-            Console.WriteLine(message);
-            var saisie = Console.ReadLine();
-            while (string.IsNullOrWhiteSpace(saisie))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Champ requis. Recommence:");
-                Console.ResetColor();
-                saisie = Console.ReadLine();
-            }
-
-            return saisie;
-        }
 
         static void SupprimerContact()
         {
             Console.Clear();
             Console.WriteLine("SUPPRESSION D'UN CONTACT\n");
 
+            Console.Write("{0,-6} | ", "NUMERO");
+            Console.Write("{0,-10} | ", "NOM");
+            Console.Write("{0,-10} | ", "PRENOM");
+            Console.WriteLine();
+            Console.WriteLine(new string('-', 35));
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
             for (var i = 0; i < contacts.Count; i++)
             {
-                Console.WriteLine($"- {contacts[i]} ({i})");
+                var contact = contacts[i];
+                Console.Write("{0,-6} | ", i);
+                Console.Write("{0,-10} | ", contact.Nom);
+                Console.Write("{0,-10} | ", contact.Prenom);
+                Console.WriteLine();
             }
+            Console.ResetColor();
 
             Console.Write("Entre le numéro du contact à supprimer: ");
             var index = int.Parse(Console.ReadLine());
@@ -149,20 +146,6 @@ namespace ContactsManager
 
             Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
             Console.ReadKey();
-        }
-    }
-
-    public class Contact
-    {
-        public string Nom { get; set; }
-        public string Prenom { get; set; }
-        public string Email { get; set; }
-        public string Telephone { get; set; }
-        public DateTime DateNaissance { get; set; }
-
-        public override string ToString()
-        {
-            return Nom + " " + Prenom;
         }
     }
 }
