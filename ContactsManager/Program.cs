@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ContactsManager
 {
@@ -10,6 +10,11 @@ namespace ContactsManager
 
         static void Main(string[] args)
         {
+            string chaine = "Bonjour";
+
+            IComparable variable1 = chaine;
+            IEnumerable<char> variable2 = chaine;
+
             contacts = GestionDonnees.LireFichier();
 
             bool continuer = true;
@@ -114,21 +119,13 @@ namespace ContactsManager
                 saisie = Console.ReadLine();
             }
 
-            IEnumerable<Contact> contactsTries = null;
-            switch (tri)
+            var tableau = new Dictionary<int, Func<IEnumerable<Contact>, IEnumerable<Contact>>>
             {
-                case 1:
-                    contactsTries = contacts
-                        .OrderBy(x => x.Nom)
-                        .ToList();
-                    break;
+                [1] = Contact.TrierParNom,
+                [2] = Contact.TrierParPrenom
+            };
 
-                case 2:
-                    contactsTries = contacts
-                        .OrderBy(x => x.Prenom)
-                        .ToList();
-                    break;
-            }
+            IEnumerable<Contact> contactsTries = tableau[tri](contacts);
 
             AfficherListeContacts(contactsTries);
 

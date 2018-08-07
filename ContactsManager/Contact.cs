@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mail;
 
 namespace ContactsManager
 {
-    public class Contact
+    public partial class Contact
     {
         public string Nom { get; set; }
         public string Prenom { get; set; }
@@ -13,6 +16,16 @@ namespace ContactsManager
         public override string ToString()
         {
             return Nom + " " + Prenom;
+        }
+
+        public static IEnumerable<Contact> TrierParPrenom(IEnumerable<Contact> contacts)
+        {
+            return contacts.OrderBy(x => x.Prenom);
+        }
+
+        public static IEnumerable<Contact> TrierParNom(IEnumerable<Contact> contacts)
+        {
+            return contacts.OrderBy(x => x.Nom);
         }
     }
 }
