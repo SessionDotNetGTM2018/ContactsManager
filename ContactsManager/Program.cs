@@ -1,25 +1,17 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using ContactsManager.Business;
+using ContactsManager.DAL;
 
-namespace ContactsManager
+namespace ContactsManager.Application
 {
     class Program
     {
-        static event EventHandler<ListeModifieeEventArgs> ListeModifiee;
-
-        static List<Contact> contacts = new List<Contact>();
+        static IServiceContact service = new ServiceContact();
 
         static void Main(string[] args)
         {
-            contacts = GestionDonnees.LireFichier();
-            ListeModifiee += (sender, eventArgs) =>
-            {
-                Console.WriteLine($"La liste a été modifiée ({eventArgs.Raison})... " +
-                    "Le fichier va être mis à jour");
-                GestionDonnees.EcrireFichier(contacts);
-            };
-
             bool continuer = true;
             while (continuer)
             {
@@ -51,13 +43,6 @@ namespace ContactsManager
                         break;
                 }
             }
-
-            GestionDonnees.EcrireFichier(contacts);
-        }
-
-        private static void Program_ListeModifiee(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -85,7 +70,7 @@ namespace ContactsManager
             Console.Clear();
             Console.WriteLine("LISTE DES CONTACTS\n");
 
-            AfficherListeContacts(contacts);
+            AfficherListeContacts(service.GetContacts());
 
             OutilsConsole.AfficherRetourMenu();
         }
@@ -133,7 +118,7 @@ namespace ContactsManager
                 [2] = Contact.TrierParPrenom
             };
 
-            IEnumerable<Contact> contactsTries = tableau[tri](contacts);
+            IEnumerable<Contact> contactsTries = tableau[tri](service.GetContacts());
 
             AfficherListeContacts(contactsTries);
 
@@ -144,11 +129,8 @@ namespace ContactsManager
         {
             OutilsConsole.AfficherMessage("Un début de nom ou prénom?", ConsoleColor.Yellow);
             var saisie = Console.ReadLine();
-            var contactsTrouves = contacts
-                .Where(x => x.Prenom.StartsWith(saisie, StringComparison.OrdinalIgnoreCase)
-                            || x.Nom.StartsWith(saisie, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-            AfficherListeContacts(contactsTrouves);
+
+            AfficherListeContacts(service.ChercherContacts(saisie));
 
             OutilsConsole.AfficherRetourMenu();
         }
@@ -170,10 +152,9 @@ namespace ContactsManager
 
             contact.DateNaissance = OutilsConsole.SaisirDate("Date de naissance:");
 
-            contacts.Add(contact);
+            service.CreerContact(contact);
 
             OutilsConsole.AfficherMessage("Contact ajouté !", ConsoleColor.Green);
-            OnListeModifiee(RaisonListeModifiee.Ajout);
 
             OutilsConsole.AfficherRetourMenu();
         }
@@ -189,10 +170,12 @@ namespace ContactsManager
             Console.WriteLine();
             Console.WriteLine(new string('-', 35));
 
+            var listeContacts = service.GetContacts();
+
             Console.ForegroundColor = ConsoleColor.Yellow;
-            for (var i = 0; i < contacts.Count; i++)
+            for (var i = 0; i < listeContacts.Count(); i++)
             {
-                var contact = contacts[i];
+                var contact = listeContacts.ElementAt(i);
                 Console.Write("{0,-6} | ", i);
                 Console.Write("{0,-10} | ", contact.Nom);
                 Console.Write("{0,-10} | ", contact.Prenom);
@@ -203,11 +186,11 @@ namespace ContactsManager
             Console.Write("Entre le numéro du contact à supprimer: ");
             var index = int.Parse(Console.ReadLine());
 
-            if (index < contacts.Count)
+            if (index < listeContacts.Count())
             {
-                contacts.RemoveAt(index);
+                var contact = listeContacts.ElementAt(index);
+                service.SupprimerContact(contact);
                 OutilsConsole.AfficherMessage("Contact supprimé !", ConsoleColor.Green);
-                OnListeModifiee(RaisonListeModifiee.Suppression);
             }
             else
             {
@@ -216,30 +199,5 @@ namespace ContactsManager
 
             OutilsConsole.AfficherRetourMenu();
         }
-
-        static void OnListeModifiee(RaisonListeModifiee raison)
-        {
-            var handler = ListeModifiee;
-            if (handler != null)
-            {
-                handler(null, new ListeModifieeEventArgs(raison));
-            }
-        }
-    }
-
-    public class ListeModifieeEventArgs : EventArgs
-    {
-        public ListeModifieeEventArgs(RaisonListeModifiee raison)
-        {
-            Raison = raison;
-        }
-
-        public RaisonListeModifiee Raison { get; set; }
-    }
-
-    public enum RaisonListeModifiee
-    {
-        Ajout,
-        Suppression,
     }
 }

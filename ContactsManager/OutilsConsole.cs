@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ContactsManager
+namespace ContactsManager.Application
 {
     public static class OutilsConsole
     {

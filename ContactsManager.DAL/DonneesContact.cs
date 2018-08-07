@@ -3,16 +3,44 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace ContactsManager
+namespace ContactsManager.DAL
 {
-    public static class GestionDonnees
+    public class DonneesContact : IDonneesContact
     {
         const string CheminFichier = "Contacts.txt";
         const char SeparateurChamps = ';';
 
-        public static List<Contact> LireFichier()
+        private List<Contact> contacts;
+
+        public IEnumerable<Contact> GetListe()
         {
-            var contacts = new List<Contact>();
+            if (this.contacts == null)
+            {
+                LireFichier();
+            }
+
+            return this.contacts;
+        }
+
+        public void Enregistrer(Contact contact)
+        {
+            if (!this.contacts.Contains(contact))
+            {
+                this.contacts.Add(contact);
+            }
+
+            this.EcrireFichier();
+        }
+
+        public void Supprimer(Contact contact)
+        {
+            this.contacts.Remove(contact);
+            this.EcrireFichier();
+        }
+
+        private void LireFichier()
+        {
+            this.contacts = new List<Contact>();
             if (File.Exists(CheminFichier))
             {
                 var lignes = File.ReadAllLines(CheminFichier);
@@ -32,14 +60,12 @@ namespace ContactsManager
                     contacts.Add(contact);
                 }
             }
-
-            return contacts;
         }
 
-        public static void EcrireFichier(IEnumerable<Contact> contacts)
+        private void EcrireFichier()
         {
             var contenuFichier = new StringBuilder();
-            foreach (var contact in contacts)
+            foreach (var contact in this.contacts)
             {
                 contenuFichier.AppendLine(string.Join(
                                             SeparateurChamps.ToString(),

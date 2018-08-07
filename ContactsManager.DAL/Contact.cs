@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 
-namespace ContactsManager
+namespace ContactsManager.DAL
 {
-    public partial class Contact
+    public class Contact
     {
         public string Nom { get; set; }
         public string Prenom { get; set; }
