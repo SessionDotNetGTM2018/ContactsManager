@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ContactsManager
 {
     class Program
     {
-        static List<Contact> contacts = new List<Contact>();
+        static List<Contact> contacts = new List<Contact>
+        {
+            new Contact{Nom="BAZAN", Prenom="Yannick" },
+            new Contact{Nom="DUPONT", Prenom="Gérard" },
+            new Contact{Nom="SMITH", Prenom="John", DateNaissance = new DateTime(1978,04,23) },
+            new Contact{Nom="FOULT", Prenom="Anaïs" },
+        };
 
         static void Main(string[] args)
         {
@@ -25,6 +32,10 @@ namespace ContactsManager
                         SupprimerContact();
                         break;
                     case "4":
+                        TrierContacts();
+                        break;
+                    case "q":
+                    case "Q":
                         continuer = false;
                         break;
                     default:
@@ -47,7 +58,8 @@ namespace ContactsManager
             Console.WriteLine("1. Liste des contacts");
             Console.WriteLine("2. Ajout d’un contact");
             Console.WriteLine("3. Suppression d’un contact");
-            Console.WriteLine("4. Quitter");
+            Console.WriteLine("4. Trier les contacts");
+            Console.WriteLine("Q. Quitter");
             Console.Write("\nVotre choix: ");
 
             return Console.ReadLine();
@@ -58,6 +70,15 @@ namespace ContactsManager
             Console.Clear();
             Console.WriteLine("LISTE DES CONTACTS\n");
 
+            AfficherListeContacts(contacts);
+
+            Console.WriteLine();
+            Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
+            Console.ReadKey();
+        }
+
+        private static void AfficherListeContacts(IEnumerable<Contact> listeContacts)
+        {
             OutilsConsole.AfficherChamp("NOM", 10);
             OutilsConsole.AfficherChamp("PRENOM", 10);
             OutilsConsole.AfficherChamp("EMAIL", 20);
@@ -67,7 +88,7 @@ namespace ContactsManager
             Console.WriteLine(new string('-', 75));
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            foreach (var contact in contacts)
+            foreach (var contact in listeContacts)
             {
                 OutilsConsole.AfficherChamp(contact.Nom, 10);
                 OutilsConsole.AfficherChamp(contact.Prenom, 10);
@@ -77,6 +98,39 @@ namespace ContactsManager
                 Console.WriteLine();
             }
             Console.ResetColor();
+        }
+
+        static void TrierContacts()
+        {
+            OutilsConsole.AfficherMessage(
+                "Sur quel champ (1 pour le nom, 2 pour le prénom) ?",
+                ConsoleColor.Yellow);
+            var saisie = Console.ReadLine();
+            byte tri;
+            while (!byte.TryParse(saisie, out tri)
+                || (tri < 1 || tri > 2))
+            {
+                OutilsConsole.AfficherMessageErreur("Choix inconnu. Recommence.");
+                saisie = Console.ReadLine();
+            }
+
+            IEnumerable<Contact> contactsTries = null;
+            switch (tri)
+            {
+                case 1:
+                    contactsTries = contacts
+                        .OrderBy(x => x.Nom)
+                        .ToList();
+                    break;
+
+                case 2:
+                    contactsTries = contacts
+                        .OrderBy(x => x.Prenom)
+                        .ToList();
+                    break;
+            }
+
+            AfficherListeContacts(contactsTries);
 
             Console.WriteLine();
             Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
