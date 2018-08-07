@@ -141,5 +141,22 @@ namespace ContactsManager
             Console.WriteLine(message);
             Console.ResetColor();
         }
+
+        /// <summary>
+        /// Affiche un texte à la longueur fournie.
+        /// Si le texte est plus long, il sera tronqué.
+        /// S'il est plus court, il sera complété par des espaces.
+        /// </summary>
+        /// <param name="texte">Texte à afficher</param>
+        /// <param name="longueurAffichage">Longueur d'affichage</param>
+        public static void AfficherChamp(string texte, int longueurAffichage)
+        {
+            texte = (texte ?? string.Empty);
+
+            // Si le texte est plus long que la longueur d'affichage,
+            //  on le tronque
+            texte = texte.Substring(0, Math.Min(texte.Length, longueurAffichage));
+            Console.Write($"{texte.PadRight(longueurAffichage)} | ");
+        }
     }
 }

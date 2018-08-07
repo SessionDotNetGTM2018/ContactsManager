@@ -58,22 +58,22 @@ namespace ContactsManager
             Console.Clear();
             Console.WriteLine("LISTE DES CONTACTS\n");
 
-            Console.Write("{0,-10} | ", "NOM");
-            Console.Write("{0,-10} | ", "PRENOM");
-            Console.Write("{0,-20} | ", "EMAIL");
-            Console.Write("{0,-10} | ", "TELEPHONE");
-            Console.Write("{0,-10} | ", "DATE NAIS.");
+            OutilsConsole.AfficherChamp("NOM", 10);
+            OutilsConsole.AfficherChamp("PRENOM", 10);
+            OutilsConsole.AfficherChamp("EMAIL", 20);
+            OutilsConsole.AfficherChamp("TELEPHONE", 10);
+            OutilsConsole.AfficherChamp("DATE NAISSANCE", 10);
             Console.WriteLine();
             Console.WriteLine(new string('-', 75));
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             foreach (var contact in contacts)
             {
-                Console.Write("{0,-10} | ", contact.Nom);
-                Console.Write("{0,-10} | ", contact.Prenom);
-                Console.Write("{0,-20} | ", contact.Email);
-                Console.Write("{0,-10} | ", contact.Telephone);
-                Console.Write("{0,-10} | ", contact.DateNaissance?.ToShortDateString());
+                OutilsConsole.AfficherChamp(contact.Nom, 10);
+                OutilsConsole.AfficherChamp(contact.Prenom, 10);
+                OutilsConsole.AfficherChamp(contact.Email, 20);
+                OutilsConsole.AfficherChamp(contact.Telephone, 10);
+                OutilsConsole.AfficherChamp(contact.DateNaissance?.ToShortDateString(), 10);
                 Console.WriteLine();
             }
             Console.ResetColor();
