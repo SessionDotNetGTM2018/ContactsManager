@@ -6,16 +6,19 @@ namespace ContactsManager
 {
     class Program
     {
+        static event EventHandler<ListeModifieeEventArgs> ListeModifiee;
+
         static List<Contact> contacts = new List<Contact>();
 
         static void Main(string[] args)
         {
-            string chaine = "Bonjour";
-
-            IComparable variable1 = chaine;
-            IEnumerable<char> variable2 = chaine;
-
             contacts = GestionDonnees.LireFichier();
+            ListeModifiee += (sender, eventArgs) =>
+            {
+                Console.WriteLine($"La liste a été modifiée ({eventArgs.Raison})... " +
+                    "Le fichier va être mis à jour");
+                GestionDonnees.EcrireFichier(contacts);
+            };
 
             bool continuer = true;
             while (continuer)
@@ -50,6 +53,11 @@ namespace ContactsManager
             }
 
             GestionDonnees.EcrireFichier(contacts);
+        }
+
+        private static void Program_ListeModifiee(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -165,6 +173,8 @@ namespace ContactsManager
             contacts.Add(contact);
 
             OutilsConsole.AfficherMessage("Contact ajouté !", ConsoleColor.Green);
+            OnListeModifiee(RaisonListeModifiee.Ajout);
+
             OutilsConsole.AfficherRetourMenu();
         }
 
@@ -197,6 +207,7 @@ namespace ContactsManager
             {
                 contacts.RemoveAt(index);
                 OutilsConsole.AfficherMessage("Contact supprimé !", ConsoleColor.Green);
+                OnListeModifiee(RaisonListeModifiee.Suppression);
             }
             else
             {
@@ -205,5 +216,30 @@ namespace ContactsManager
 
             OutilsConsole.AfficherRetourMenu();
         }
+
+        static void OnListeModifiee(RaisonListeModifiee raison)
+        {
+            var handler = ListeModifiee;
+            if (handler != null)
+            {
+                handler(null, new ListeModifieeEventArgs(raison));
+            }
+        }
+    }
+
+    public class ListeModifieeEventArgs : EventArgs
+    {
+        public ListeModifieeEventArgs(RaisonListeModifiee raison)
+        {
+            Raison = raison;
+        }
+
+        public RaisonListeModifiee Raison { get; set; }
+    }
+
+    public enum RaisonListeModifiee
+    {
+        Ajout,
+        Suppression,
     }
 }
