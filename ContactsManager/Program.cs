@@ -34,6 +34,9 @@ namespace ContactsManager
                     case "4":
                         TrierContacts();
                         break;
+                    case "5":
+                        RechercherContacts();
+                        break;
                     case "q":
                     case "Q":
                         continuer = false;
@@ -59,6 +62,7 @@ namespace ContactsManager
             Console.WriteLine("2. Ajout d’un contact");
             Console.WriteLine("3. Suppression d’un contact");
             Console.WriteLine("4. Trier les contacts");
+            Console.WriteLine("5. Rechercher des contacts");
             Console.WriteLine("Q. Quitter");
             Console.Write("\nVotre choix: ");
 
@@ -77,7 +81,7 @@ namespace ContactsManager
             Console.ReadKey();
         }
 
-        private static void AfficherListeContacts(IEnumerable<Contact> listeContacts)
+        static void AfficherListeContacts(IEnumerable<Contact> listeContacts)
         {
             OutilsConsole.AfficherChamp("NOM", 10);
             OutilsConsole.AfficherChamp("PRENOM", 10);
@@ -137,6 +141,21 @@ namespace ContactsManager
             Console.ReadKey();
         }
 
+        static void RechercherContacts()
+        {
+            OutilsConsole.AfficherMessage("Un début de nom ou prénom?", ConsoleColor.Yellow);
+            var saisie = Console.ReadLine();
+            var contactsTrouves = contacts
+                .Where(x => x.Prenom.StartsWith(saisie, StringComparison.OrdinalIgnoreCase)
+                            || x.Nom.StartsWith(saisie, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+            AfficherListeContacts(contactsTrouves);
+
+            Console.WriteLine();
+            Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
+            Console.ReadKey();
+        }
+
         static void AjouterContact()
         {
             Console.Clear();
@@ -156,7 +175,7 @@ namespace ContactsManager
 
             contacts.Add(contact);
 
-            Console.WriteLine("Contact ajouté !");
+            OutilsConsole.AfficherMessage("Contact ajouté !", ConsoleColor.Green);
 
             Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
             Console.ReadKey();
@@ -191,11 +210,11 @@ namespace ContactsManager
             if (index < contacts.Count)
             {
                 contacts.RemoveAt(index);
-                Console.WriteLine("Contact supprimé !");
+                OutilsConsole.AfficherMessage("Contact supprimé !", ConsoleColor.Green);
             }
             else
             {
-                Console.WriteLine("Numéro invalide !");
+                OutilsConsole.AfficherMessageErreur("Numéro invalide !");
             }
 
             Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
