@@ -168,10 +168,8 @@ namespace ContactsManager
             contacts.Add(contact);
 
             OutilsConsole.AfficherMessage("Contact ajouté !", ConsoleColor.Green);
-
             OutilsConsole.AfficherRetourMenu();
         }
-
 
         static void SupprimerContact()
         {
