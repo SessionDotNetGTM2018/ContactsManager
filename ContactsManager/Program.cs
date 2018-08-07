@@ -6,16 +6,12 @@ namespace ContactsManager
 {
     class Program
     {
-        static List<Contact> contacts = new List<Contact>
-        {
-            new Contact{Nom="BAZAN", Prenom="Yannick" },
-            new Contact{Nom="DUPONT", Prenom="Gérard" },
-            new Contact{Nom="SMITH", Prenom="John", DateNaissance = new DateTime(1978,04,23) },
-            new Contact{Nom="FOULT", Prenom="Anaïs" },
-        };
+        static List<Contact> contacts = new List<Contact>();
 
         static void Main(string[] args)
         {
+            contacts = GestionDonnees.LireFichier();
+
             bool continuer = true;
             while (continuer)
             {
@@ -47,6 +43,8 @@ namespace ContactsManager
                         break;
                 }
             }
+
+            GestionDonnees.EcrireFichier(contacts);
         }
 
         /// <summary>
@@ -76,9 +74,7 @@ namespace ContactsManager
 
             AfficherListeContacts(contacts);
 
-            Console.WriteLine();
-            Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
-            Console.ReadKey();
+            OutilsConsole.AfficherRetourMenu();
         }
 
         static void AfficherListeContacts(IEnumerable<Contact> listeContacts)
@@ -136,9 +132,7 @@ namespace ContactsManager
 
             AfficherListeContacts(contactsTries);
 
-            Console.WriteLine();
-            Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
-            Console.ReadKey();
+            OutilsConsole.AfficherRetourMenu();
         }
 
         static void RechercherContacts()
@@ -151,9 +145,7 @@ namespace ContactsManager
                 .ToList();
             AfficherListeContacts(contactsTrouves);
 
-            Console.WriteLine();
-            Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
-            Console.ReadKey();
+            OutilsConsole.AfficherRetourMenu();
         }
 
         static void AjouterContact()
@@ -177,8 +169,7 @@ namespace ContactsManager
 
             OutilsConsole.AfficherMessage("Contact ajouté !", ConsoleColor.Green);
 
-            Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
-            Console.ReadKey();
+            OutilsConsole.AfficherRetourMenu();
         }
 
 
@@ -217,8 +208,7 @@ namespace ContactsManager
                 OutilsConsole.AfficherMessageErreur("Numéro invalide !");
             }
 
-            Console.WriteLine("\nAppuie sur une touche pour revenir au menu...");
-            Console.ReadKey();
+            OutilsConsole.AfficherRetourMenu();
         }
     }
 }

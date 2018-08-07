@@ -158,5 +158,18 @@ namespace ContactsManager
             texte = texte.Substring(0, Math.Min(texte.Length, longueurAffichage));
             Console.Write($"{texte.PadRight(longueurAffichage)} | ");
         }
+
+        /// <summary>
+        /// Affiche un message indiquant qu'en appuyant sur une touche,
+        /// l'utilisateur va être redirigé vers le menu.
+        /// </summary>
+        public static void AfficherRetourMenu()
+        {
+            Console.WriteLine();
+            AfficherMessage(
+                "\n > Appuie sur une touche pour revenir au menu...",
+                ConsoleColor.White);
+            Console.ReadKey();
+        }
     }
 }
