@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContactsManager
 {
@@ -27,6 +23,11 @@ namespace ContactsManager
             return saisie;
         }
 
+        /// <summary>
+        /// Récupère la saisie sous forme d'entier.
+        /// </summary>
+        /// <param name="message">Message à afficher sur la console</param>
+        /// <returns>Renvoie la saisie convertie en entier si renseignée, null autrement.</returns>
         public static int? SaisirEntier(string message)
         {
             Console.WriteLine(message);
@@ -45,6 +46,12 @@ namespace ContactsManager
                     : entier;
         }
 
+        /// <summary>
+        /// Récupère la saisie sous forme d'entier.
+        /// Tant que la saisie est vide ou invalide, la méthode redemande.
+        /// </summary>
+        /// <param name="message">Message à afficher sur la console</param>
+        /// <returns>Renvoie la saisie convertie en entier.</returns>
         public static int SaisirEntierObligatoire(string message)
         {
             Console.WriteLine(message);
@@ -64,6 +71,11 @@ namespace ContactsManager
             return entier;
         }
 
+        /// <summary>
+        /// Récupère la saisie sous forme de date.
+        /// </summary>
+        /// <param name="message">Message à afficher sur la console</param>
+        /// <returns>Renvoie la saisie convertie en date si renseignée, null autrement.</returns>
         public static DateTime? SaisirDate(string message)
         {
             Console.WriteLine(message);
@@ -82,6 +94,12 @@ namespace ContactsManager
                     : date;
         }
 
+        /// <summary>
+        /// Récupère la saisie sous forme de date.
+        /// Tant que la saisie est vide ou invalide, la méthode redemande.
+        /// </summary>
+        /// <param name="message">Message à afficher sur la console</param>
+        /// <returns>Renvoie la saisie convertie en date.</returns>
         public static DateTime SaisirDateObligatoire(string message)
         {
             Console.WriteLine(message);
@@ -101,9 +119,25 @@ namespace ContactsManager
             return date;
         }
 
+        /// <summary>
+        /// Affiche un message d'erreur sur la console.
+        /// </summary>
+        /// <param name="message">Message à afficher</param>
         public static void AfficherMessageErreur(string message)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
+            AfficherMessage(message, ConsoleColor.Red);
+        }
+
+        /// <summary>
+        /// Affiche un message d'erreur sur la console de la couleur voulue.
+        /// </summary>
+        /// <param name="message">Message à afficher</param>
+        /// <param name="couleur">Couleur à utiliser (gris par défaut)</param>
+        public static void AfficherMessage(
+            string message, 
+            ConsoleColor couleur = ConsoleColor.Gray)
+        {
+            Console.ForegroundColor = couleur;
             Console.WriteLine(message);
             Console.ResetColor();
         }
