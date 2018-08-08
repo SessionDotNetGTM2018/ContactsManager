@@ -13,6 +13,7 @@ namespace ContactsManager.Application
         static void Main(string[] args)
         {
             bool continuer = true;
+            //test
             while (continuer)
             {
                 var choix = AfficherMenu();
